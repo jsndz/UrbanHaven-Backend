@@ -5,6 +5,8 @@ export const createUser = async (req, res) => {
     const user = new User(req.body);
     await user.save();
     return res.status(201).json({
+      id:user.id,
+      role:user.role,
       data: user,
       message: "Successfully created User",
       success: true,
@@ -34,8 +36,7 @@ export const LoginUser = async (req, res) => {
     } else if (user.password === req.body.password) {
       return res.status(201).json({
         id:user.id,
-        name:user.name,
-        addresses:user.addresses,
+        role:user.role,
         data: user,
         message: "Successfully found User",
         success: true,
