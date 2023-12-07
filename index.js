@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import { connect } from "./src/config/database.js";
 import apiRoute from "./src/routes/index.js"
 import cors from "cors"
-
+import PORT from "./src/config/serverConfig.js"
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
