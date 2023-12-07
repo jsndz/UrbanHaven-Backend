@@ -7,9 +7,10 @@ import v1UserRoute from "./v1/user.js";
 import v1AuthRoute from "./v1/auth.js";
 import v1CartRoute from "./v1/cart.js";
 import v1OrderRoute from "./v1/order.js";
+import { authenticate } from "../middleware/authenticate.js";
 const router = express.Router();
 
-router.use("/v1", v1ProductRoute);
+router.use("/v1",authenticate, v1ProductRoute);
 router.use("/v1", v1CategoryRoute);
 router.use("/v1", v1BrandRoute);
 router.use("/v1", v1UserRoute);
