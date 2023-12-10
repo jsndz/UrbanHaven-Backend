@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 import { connect } from "./src/config/database.js";
 import apiRoute from "./src/routes/index.js"
 import cors from "cors"
-import PORT from "./src/config/serverConfig.js"
 import passport from "passport";
 import { passportAuth } from "./src/config/jwt-middleware.js";
 const app = express();
@@ -20,8 +19,9 @@ app.use(passport.initialize());
 passportAuth(passport)
 app.use('/api',apiRoute);
 
-app.listen(PORT,  async ()=>{ 
+app.listen(8080,  async ()=>{ 
     console.log("server started at 8080");
     await connect();
     console.log("MongoDB connected");
+    console.log("Server started");
 });

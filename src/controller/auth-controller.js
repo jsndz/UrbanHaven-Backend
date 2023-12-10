@@ -1,12 +1,13 @@
 import User from "../models/User.js";
-
 export const createUser = async (req, res) => {
   try {
-    const user = new User(req.body);
-    await user.save();
+    console.log("Before user creation");
+    const user = await User.create(req.body);
+    console.log("After user creation");
+
     return res.status(201).json({
-      id:user.id,
-      role:user.role,
+      id: user.id,
+      role: user.role,
       data: user,
       message: "Successfully created User",
       success: true,
@@ -26,30 +27,21 @@ export const createUser = async (req, res) => {
 export const LoginUser = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    if (!user) {
-      res.status(500).json({
-        data: {},
-        message: "user doesnt exist password",
-        success: false,
-        err: { error },
-      });
-    } else if (user.password === req.body.password) {
-      return res.status(201).json({
-        id:user.id,
-        role:user.role,
-        data: user,
-        message: "Successfully found User",
-        success: true,
-        err: {},
-      });
-    } else {
-      res.status(500).json({
-        data: {},
-        message: "wrong password",
-        success: false,
-        err: { error },
-      });
+    const token = await user.genJwt(user);
+
+    if (!user.comparePassword(req.body.password)) {
+      throw {
+        message: "incorrect password",
+      };
     }
+
+    return res.status(201).json({
+      acess_token: token,
+      data: user,
+      message: "Successfully found User",
+      success: true,
+      err: {},
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({

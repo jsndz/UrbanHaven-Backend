@@ -2,7 +2,7 @@ import { genSaltSync } from "bcrypt";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken'
-import JWT_SECRET from '../config/jwt';
+import JWT_SECRET from '../config/serverConfig.js';
 const { Schema } = mongoose;
 
 
@@ -35,10 +35,20 @@ UserSchema.pre('save',function(next){
   const SALT = genSaltSync(10);
   const encryptedPassword = bcrypt.hashSync(user.password,SALT);
   user.password = encryptedPassword;
+  next();
 })
 
 UserSchema.methods.comparePassword = function(password){
   return bcrypt.compareSync(password,this.password)
+}
+
+UserSchema.methods.genJwt = function (user){
+  const payload = {
+    
+    email:user.email
+  }
+  return jwt.sign(payload,
+  'urbanhaven')
 }
 const virtual = UserSchema.virtual("id");
 virtual.get(function () {
@@ -52,14 +62,7 @@ UserSchema.set("toJSON", {
   },
 });
 
-UserSchema.methods.genJwt = function(){
-  return jwt.sign({
-    id:this._id,
-    email:this.email,
-  },
-  JWT_SECRET,
-  {expiresIn:'1h'})
-}
-const User = mongoose.model("User", UserSchema);
 
+const User = mongoose.model("User", UserSchema);
+console.log("User",User); 
 export default User;
