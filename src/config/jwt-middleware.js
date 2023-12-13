@@ -8,7 +8,7 @@ const ExtractJwt = passportJWT.ExtractJwt;
 
 const opts ={
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: 'urbanhaven'
+    secretOrKey: process.env.AUTH_KEY
 }
 
 export const passportAuth = (passport) =>{

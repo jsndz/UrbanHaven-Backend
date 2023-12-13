@@ -9,6 +9,9 @@ const OrderSchema = new mongoose.Schema({
   totalAmount: {
     type: Number
   },
+  paymentIntentClientSecret: {
+    type: String,
+  },
   totalItems: {
     type: Number
   },
