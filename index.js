@@ -64,9 +64,9 @@ app.post("/create-checkout-session", async (req, res) => {
 
 
 app.use('/api',apiRoute);
-
-app.listen(8080,  async ()=>{ 
-    console.log("server started at 8080");
+const PORT = process.env.PORT ;
+app.listen(PORT,  async ()=>{ 
+    console.log(`server started at port ${PORT}`);
     await connect();
     console.log("MongoDB connected");
     console.log("Server started");
